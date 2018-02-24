@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "ava tests/*",
-    "test:watch": "ava tests/* --watch --verbose",
-    "dev": "nodemon ./src/index.js"
+    "test:watch": "NODE_ENV=development ava tests/* --watch --verbose --ignore *.db",
+    "dev": "nodemon ./src/index.js --ignore *.db"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,9 @@
   "dependencies": {
     "lodash": "^4.17.5",
     "restify": "^6.3.4",
-    "restify-cors-middleware": "^1.1.0"
+    "restify-cors-middleware": "^1.1.0",
+    "sequelize": "^4.33.4",
+    "sequelize-cli": "^4.0.0",
+    "sqlite3": "^3.1.13"
   }
 }

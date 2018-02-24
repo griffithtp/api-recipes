@@ -1,4 +1,6 @@
 
+const { Recipes } = require('../models');
+
 const fetchRecipeDetails = async (req, res, next) => {
 
   res.send({});
@@ -7,7 +9,10 @@ const fetchRecipeDetails = async (req, res, next) => {
 
 const fetchRecipesList = async (req, res, next) => {
 
-  res.send([]);
+  Recipes.findAll({})
+    .then( recipes => {
+      res.send(recipes);
+    })
 
 }
 
