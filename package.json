@@ -1,0 +1,30 @@
+{
+  "name": "api-recipes",
+  "version": "0.0.1",
+  "description": "REST API Recipes",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "ava tests/*",
+    "test:watch": "ava tests/* --watch --verbose",
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/griffithtp/api-recipes.git"
+  },
+  "author": "Griffith TchenPan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/griffithtp/api-recipes/issues"
+  },
+  "homepage": "https://github.com/griffithtp/api-recipes#readme",
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "nodemon": "^1.15.1",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "restify": "^6.3.4",
+    "restify-cors-middleware": "^1.1.0"
+  }
+}
