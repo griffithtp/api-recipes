@@ -7,11 +7,13 @@ const fetchRecipeDetails = async (req, res, next) => {
 
   Recipes.findById(req.params.recipe_id)
     .then( recipe => {
+      if (!recipe) {
+        return next( new errs.ResourceNotFoundError(`Unable to find recipe id=${req.params.recipe_id}`) );
+      }
       res.send(recipe);
     })
     .catch( err => {
-      console.log(err);
-      return err;
+      return next(new errs.BadRequestError(err.message || 'unknown error'));
     })
 }
 
@@ -43,9 +45,7 @@ const fetchRecipesList = async (req, res, next) => {
       return next();
     })
     .catch(err => {
-      // console.log(err);
-      return next(new errs.BadRequestError(err.message));
-      // return err;
+      return next(new errs.BadRequestError(err.message || 'unknown error'));
     })
 }
 
@@ -64,12 +64,12 @@ const updateRecipe = async (req, res, next) => {
     if (updatedRecipe) {
       res.send(await updatedRecipe.dataValues)
     } else {
-      res.send(404, { error: "could not update resource"});
+      return next(new errs.InvalidContentError("could not update resource"));
     }
   } else {
-    res.send(404, { error: "resource not found or missing parameters"});
+    return next(new errs.InvalidArgumentError("resource not found or missing parameters"));
   }
-
+  return next();
 }
 
 const rateRecipe = async (req, res, next) => {
@@ -80,7 +80,12 @@ const rateRecipe = async (req, res, next) => {
 
 const addRecipe = async (req, res, next) => {
 
-  // TODO: validate req.params for minimum recipe properties
+  // validate req.params for minimum recipe properties
+  const require_fields = ['box_type','title','recipe_cuisine'];
+  const validated = require_fields.every((param) => param in req.params);
+  if (!validated) {
+    return next(new errs.InvalidArgumentError(`please ensure all required fiels are provided: ${require_fields.join(", ")}`))
+  }
 
   const result = await Recipes.create(req.params)
     .then( recipe => recipe )
@@ -91,10 +96,10 @@ const addRecipe = async (req, res, next) => {
   if (result.id) {
     const recipe_id = result.id;
     const new_recipe = await Recipes.findById(recipe_id)
-    .then(res => res)
+      .then(res => res)
     res.send(new_recipe);
   } else {
-    res.send(400, { error: "request failed"});
+    return next(new errs.InvalidContentError("unable to add new recipe"));
   }
 
 }
