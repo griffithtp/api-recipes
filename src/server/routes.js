@@ -1,7 +1,7 @@
 const {
   fetchRecipeDetails,
   fetchRecipesList,
-  updateReceipe,
+  updateRecipe,
   rateRecipe,
   addRecipe
 } = require("../queries/recipes");
@@ -17,7 +17,7 @@ const routes = (server) => {
   server.get("/recipes", fetchRecipesList);
 
   server.put("/recipes/rate/:recipe_id", rateRecipe);
-  server.put("/recipes/:recipe_id", updateReceipe);
+  server.put("/recipes/:recipe_id", updateRecipe);
 
   server.post("/recipes", addRecipe);
 

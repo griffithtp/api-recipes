@@ -25,9 +25,26 @@ const fetchRecipesList = async (req, res, next) => {
     })
 }
 
-const updateReceipe = async (req, res, next) => {
+const updateRecipe = async (req, res, next) => {
 
-  res.send({});
+  const recipe = await Recipes.findById(req.params.recipe_id)
+    .catch(err => {
+      // console.log(err);
+      return err
+    });
+
+  if (recipe && req.body) {
+    const updatedRecipe = await recipe.update(req.body)
+      .then(res => res)
+      .catch(err => err)
+    if (updatedRecipe) {
+      res.send(await updatedRecipe.dataValues)
+    } else {
+      res.send(404, { error: "could not update resource"});
+    }
+  } else {
+    res.send(404, { error: "resource not found or missing parameters"});
+  }
 
 }
 
@@ -62,7 +79,7 @@ const addRecipe = async (req, res, next) => {
 module.exports = {
   fetchRecipeDetails,
   fetchRecipesList,
-  updateReceipe,
+  updateRecipe,
   rateRecipe,
   addRecipe
 }
