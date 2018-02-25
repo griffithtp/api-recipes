@@ -7,6 +7,9 @@ REST API Recipes
 * `npm test` - run tests
 * `npm run dev` - start service in dev mode with nodemon
 
+* `$ sequelize db:migrate` - setup DB structure
+* `$ sequelize db:seed:all` - to load csv data
+
 # Features
 This REST API includes the following:
 * Fetch a recipe by id

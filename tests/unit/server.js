@@ -8,9 +8,9 @@ test('Server', t => {
 
   t.is(typeof server.routes.get, 'object');
   t.is(typeof server.routes.getrecipes, 'object');
-  t.is(typeof server.routes.getrecipesid, 'object');
+  t.is(typeof server.routes.getrecipesrecipe_id, 'object');
   t.is(typeof server.routes.getstatus, 'object');
   t.is(typeof server.routes.postrecipes, 'object');
-  t.is(typeof server.routes.putrecipesid, 'object');
-  t.is(typeof server.routes.putrecipesrateid, 'object');
+  t.is(typeof server.routes.putrecipesrecipe_id, 'object');
+  t.is(typeof server.routes.putrecipesraterecipe_id, 'object');
 })

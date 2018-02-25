@@ -3,8 +3,14 @@ const { Recipes } = require('../models');
 
 const fetchRecipeDetails = async (req, res, next) => {
 
-  res.send({});
-
+  Recipes.findById(req.params.recipe_id)
+    .then( recipe => {
+      res.send(recipe);
+    })
+    .catch( err => {
+      console.log(err);
+      return err;
+    })
 }
 
 const fetchRecipesList = async (req, res, next) => {
@@ -13,7 +19,10 @@ const fetchRecipesList = async (req, res, next) => {
     .then( recipes => {
       res.send(recipes);
     })
-
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
 }
 
 const updateReceipe = async (req, res, next) => {
@@ -30,7 +39,22 @@ const rateRecipe = async (req, res, next) => {
 
 const addRecipe = async (req, res, next) => {
 
-  res.send({});
+  // TODO: validate req.params for minimum recipe properties
+
+  const result = await Recipes.create(req.params)
+    .then( recipe => recipe )
+    .catch( err => {
+      console.log(err);
+      return err;
+    })
+  if (result.id) {
+    const recipe_id = result.id;
+    const new_recipe = await Recipes.findById(recipe_id)
+    .then(res => res)
+    res.send(new_recipe);
+  } else {
+    res.send(400, { error: "request failed"});
+  }
 
 }
 
