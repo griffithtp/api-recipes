@@ -1,25 +1,25 @@
 
-const getLinks = (req_queries, total, offset, limit) => {
+// generates Links object for Link Headers pagination
+const getLinks = (baseURL, req_queries, total, page, per_page) => {
 
-  const base_url = "http://localhost:8000";
-  const page = offset;
-  const per_page = limit;
-  console.log(req_queries);
+  const base_url = baseURL || "http://localhost:8000";
+  // console.log(req_queries);
 
   const firstLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'first');
   const lastLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'last');
   const nextLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'next');
   const prevLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'prev');
   let Links = [
-    { url: firstLink, rel: 'first' },
-    { url: lastLink, rel: 'last' },
-    { url: nextLink, rel: 'next'},
-    { url: prevLink, rel: 'prev'}
+    { rel: 'first', url: firstLink },
+    { rel: 'last', url: lastLink },
+    { rel: 'next', url: nextLink },
+    { rel: 'prev', url: prevLink }
   ]
 
   return Links;
 }
 
+// render Pagination Link for a rel
 const _renderPaginationLinks = (base_url, req_queries, total, page, per_page, rel) => {
   let params = [];
   for (let param in req_queries) {

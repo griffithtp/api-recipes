@@ -1,3 +1,4 @@
+const errs = require('restify-errors');
 
 const { Recipes } = require('../models');
 const { getLinks } = require('./_helpers');
@@ -16,32 +17,35 @@ const fetchRecipeDetails = async (req, res, next) => {
 
 const fetchRecipesList = async (req, res, next) => {
 
+  const baseURL = 'http://' + req.headers.host + req.route.path;
   const cuisine = req.query.recipe_cuisine || null;
-  const offset = req.query.page || 0;
-  const limit = req.query.per_page || 10;
+  const page = req.query.page || 0;
+  const per_page = req.query.per_page || 10;
 
   const where = () => {
     return cuisine ? { recipe_cuisine : cuisine } : null;
   }
   const options = {
     where: where(),
-    offset,
-    limit
+    offset: page,
+    limit: per_page
   }
 
   Recipes.findAndCountAll(options)
     .then( ({count, rows}) => {
       // output pagination using Link headers
-      const links = getLinks(req.query, count, offset, limit);
+      const links = getLinks(baseURL, req.query, count, page, per_page);
       links.forEach( link => {
         res.link(link.url, link.rel)
       })
-      
+
       res.send(rows);
+      return next();
     })
     .catch(err => {
-      console.log(err);
-      return err;
+      // console.log(err);
+      return next(new errs.BadRequestError(err.message));
+      // return err;
     })
 }
 
