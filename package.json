@@ -6,6 +6,7 @@
   "scripts": {
     "test": "ava tests/*",
     "test:watch": "NODE_ENV=development ava tests/* --watch --verbose --ignore *.db",
+    "test:watch:unit": "NODE_ENV=development ava tests/unit/* --watch --verbose",
     "dev": "NODE_ENV=development nodemon ./src/index.js --ignore *.db"
   },
   "repository": {

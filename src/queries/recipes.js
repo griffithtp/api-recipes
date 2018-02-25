@@ -1,5 +1,6 @@
 
 const { Recipes } = require('../models');
+const { getLinks } = require('./_helpers');
 
 const fetchRecipeDetails = async (req, res, next) => {
 
@@ -15,16 +16,28 @@ const fetchRecipeDetails = async (req, res, next) => {
 
 const fetchRecipesList = async (req, res, next) => {
 
+  const cuisine = req.query.recipe_cuisine || null;
   const offset = req.query.page || 0;
   const limit = req.query.per_page || 10;
+
+  const where = () => {
+    return cuisine ? { recipe_cuisine : cuisine } : null;
+  }
   const options = {
+    where: where(),
     offset,
     limit
   }
 
-  Recipes.findAll(options)
-    .then( recipes => {
-      res.send(recipes);
+  Recipes.findAndCountAll(options)
+    .then( ({count, rows}) => {
+      // output pagination using Link headers
+      const links = getLinks(req.query, count, offset, limit);
+      links.forEach( link => {
+        res.link(link.url, link.rel)
+      })
+      
+      res.send(rows);
     })
     .catch(err => {
       console.log(err);
