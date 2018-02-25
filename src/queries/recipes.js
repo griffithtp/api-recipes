@@ -15,7 +15,14 @@ const fetchRecipeDetails = async (req, res, next) => {
 
 const fetchRecipesList = async (req, res, next) => {
 
-  Recipes.findAll({})
+  const offset = req.query.page || 0;
+  const limit = req.query.per_page || 10;
+  const options = {
+    offset,
+    limit
+  }
+
+  Recipes.findAll(options)
     .then( recipes => {
       res.send(recipes);
     })
