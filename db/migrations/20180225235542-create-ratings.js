@@ -8,12 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      recipe_id: {
-        type: Sequelize.INTEGER
-      },
-      rating: {
-        type: Sequelize.INTEGER
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
@@ -21,6 +15,12 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      recipe_id: {
+        type: Sequelize.INTEGER
+      },
+      rating: {
+        type: Sequelize.INTEGER
       }
     });
   },

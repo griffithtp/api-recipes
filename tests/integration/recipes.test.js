@@ -24,27 +24,31 @@ test('POST /recipes', async t => {
   const response = await request(app)
     .post('/recipes')
     .field("box_type", "gourmet")
+    .field("title", "Healthy Pasta")
+    .field("recipe_cuisine", "italian")
     .set('Accept', 'application/json')
   t.is(await response.status, 200);
-  t.is(await response.body, 1)
+  t.is(await response.body.title, 'Healthy Pasta')
+  t.true(await response.body.id > 0);
   const list = await request(app)
-    .get('/recipes')
+    .get(`/recipes/${response.body.id}`)
     .set('Accept', 'application/json')
-  t.is(await response.body.length, 2)
+  t.is(await list.body.title, await response.body.title)
 })
 
 test('PUT /recipes/:id', async t => {
   const response = await request(app)
     .put('/recipes/1')
-    // .field()
+    .field("title", "Sweet Chilli and Lime Beef on a Crunchy Fresh Noodle Salad")
     .set('Accept', 'application/json')
   t.is(await response.status, 200);
 })
 
 test('PUT /recipes/rate/:id', async t => {
   const response = await request(app)
-    .put('/recipes/rate/1')
-    // .field()
+    .post('/recipes/rate/1')
+    .field("recipe_id", 1)
+    .field("rating", 5)
     .set('Accept', 'application/json')
   t.is(await response.status, 200);
 })

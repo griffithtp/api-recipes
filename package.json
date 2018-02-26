@@ -4,10 +4,11 @@
   "description": "REST API Recipes",
   "main": "./src/index.js",
   "scripts": {
-    "test": "ava tests/*",
+    "test": "NODE_ENV=development ava tests/*",
     "test:watch": "NODE_ENV=development ava tests/* --watch --verbose --ignore *.db",
     "test:watch:unit": "NODE_ENV=development ava tests/unit/* --watch --verbose",
-    "dev": "NODE_ENV=development nodemon ./src/index.js --ignore *.db"
+    "dev": "NODE_ENV=development nodemon ./src/index.js --ignore *.db",
+    "start": "NODE_ENV=production node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "dependencies": {
     "csvjson": "^5.0.0",
     "lodash": "^4.17.5",
+    "mysql2": "^1.5.2",
     "restify": "^6.3.4",
     "restify-cors-middleware": "^1.1.0",
     "restify-errors": "^6.0.0",
