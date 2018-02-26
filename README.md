@@ -14,6 +14,7 @@ REST API Recipes
 This REST API includes the following:
 * Fetch a recipe by id
   * `GET /recipes/:recipe_id`
+  * `GET /recipes/:recipe_id?embed=ratings`
 * Fetch all recipes for a specific cuisine with pagination
   * `GET /recipes` - defaults query params to `?page=0&per_page=10`
   * `GET /recipes?cuisine=&page=0&per_page=2`

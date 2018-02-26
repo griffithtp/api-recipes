@@ -1,20 +1,35 @@
 const errs = require('restify-errors');
 
-const { Recipes, Ratings } = require('../models');
+const { sequelize, Recipes, Ratings } = require('../models');
 const { getLinks } = require('./_helpers');
 
 const fetchRecipeDetails = async (req, res, next) => {
-
-  Recipes.findById(req.params.recipe_id)
+  let results = {};
+  const RecipesDetails = await Recipes.findById(req.params.recipe_id)
     .then( recipe => {
       if (!recipe) {
         return next( new errs.ResourceNotFoundError(`Unable to find recipe id=${req.params.recipe_id}`) );
       }
-      res.send(recipe);
+
+      return recipe.dataValues;
     })
     .catch( err => {
       return next(new errs.BadRequestError(err.message || 'unknown error'));
     })
+  results = {...RecipesDetails}
+
+  if (req.query.embed === 'ratings') {
+    const recipe_ratings = sequelize.query(
+      "SELECT rating, count(*) as total FROM Ratings WHERE recipe_id = :recipe_id GROUP BY rating ",
+      { raw:true, replacements: { recipe_id: req.params.recipe_id} } )
+      .then( ratings => {
+        return ratings[0];
+      })
+    const ratings = await recipe_ratings;
+    results = {...results, ratings};
+  }
+
+  res.send(results)
 }
 
 const fetchRecipesList = async (req, res, next) => {

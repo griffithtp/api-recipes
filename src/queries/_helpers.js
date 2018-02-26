@@ -3,7 +3,6 @@
 const getLinks = (baseURL, req_queries, total, page, per_page) => {
 
   const base_url = baseURL || "http://localhost:8000";
-  // console.log(req_queries);
 
   const firstLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'first');
   const lastLink = _renderPaginationLinks(base_url, req_queries, total, page, per_page, 'last');
