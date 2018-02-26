@@ -1,6 +1,6 @@
 const errs = require('restify-errors');
 
-const { Recipes } = require('../models');
+const { Recipes, Ratings } = require('../models');
 const { getLinks } = require('./_helpers');
 
 const fetchRecipeDetails = async (req, res, next) => {
@@ -74,7 +74,32 @@ const updateRecipe = async (req, res, next) => {
 
 const rateRecipe = async (req, res, next) => {
 
-  res.send({});
+  // validate req.params for minimum recipe properties
+  const require_fields = ['rating', 'recipe_id'];
+  const validated = require_fields.every((param) => param in req.params);
+  if (!validated) {
+    return next(new errs.InvalidArgumentError(`please ensure all required fiels are provided: ${require_fields.join(", ")}`))
+  }
+
+  // validate rating to be 0 to 5 inclusive
+  if (![0,1,2,3,4,5].includes(parseInt(req.params.rating))) {
+    return next(new errs.InvalidArgumentError(`please ensure rating is between 0 and 5 only`))
+  }
+
+  const result = await Ratings.create(req.params)
+    .then( recipe => recipe )
+    .catch( err => {
+      console.log(err);
+      return err;
+    })
+  if (result.id) {
+    const rating_id = result.id;
+    const new_recipe = await Ratings.findById(rating_id)
+      .then(res => res)
+    res.send(new_recipe);
+  } else {
+    return next(new errs.InvalidContentError("unable to add new rating"));
+  }
 
 }
 

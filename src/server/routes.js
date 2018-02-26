@@ -16,10 +16,10 @@ const routes = (server) => {
   server.get("/recipes/:recipe_id", fetchRecipeDetails);
   server.get("/recipes", fetchRecipesList);
 
-  server.put("/recipes/rate/:recipe_id", rateRecipe);
   server.put("/recipes/:recipe_id", updateRecipe);
 
   server.post("/recipes", addRecipe);
+  server.post("/recipes/rate/:recipe_id", rateRecipe);
 
 }
 

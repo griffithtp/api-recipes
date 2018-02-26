@@ -12,5 +12,5 @@ test('Server', t => {
   t.is(typeof server.routes.getstatus, 'object');
   t.is(typeof server.routes.postrecipes, 'object');
   t.is(typeof server.routes.putrecipesrecipe_id, 'object');
-  t.is(typeof server.routes.putrecipesraterecipe_id, 'object');
+  t.is(typeof server.routes.postrecipesraterecipe_id, 'object');
 })
