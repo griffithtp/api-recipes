@@ -4,7 +4,7 @@
   "description": "REST API Recipes",
   "main": "./src/index.js",
   "scripts": {
-    "test": "NODE_ENV=development ava tests/*",
+    "test": "NODE_ENV=development nyc ava tests/unit/*",
     "test:watch": "NODE_ENV=development ava tests/* --watch --verbose --ignore *.db",
     "test:watch:unit": "NODE_ENV=development ava tests/unit/* --watch --verbose",
     "dev": "NODE_ENV=development nodemon ./src/index.js --ignore *.db",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "nodemon": "^1.15.1",
+    "nyc": "^11.4.1",
     "supertest": "^3.0.0"
   },
   "dependencies": {

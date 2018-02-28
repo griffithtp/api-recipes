@@ -40,7 +40,7 @@ const _renderPaginationLinks = (base_url, req_queries, total, page, per_page, re
     }
     params.push(encodeURIComponent(param) + "=" + encodeURIComponent(req_queries[param]));
   }
-  return `<${base_url}?${params.join("&")}>`;
+  return `${base_url}?${params.join("&")}`;
 }
 
 module.exports = {

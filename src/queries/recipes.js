@@ -34,7 +34,8 @@ const fetchRecipeDetails = async (req, res, next) => {
 
 const fetchRecipesList = async (req, res, next) => {
 
-  const baseURL = 'http://' + req.headers.host + req.route.path;
+  const proto = req.isSecure() ? 'https://' : 'http://';
+  const baseURL = proto + req.headers.host + req.route.path;
   const cuisine = req.query.recipe_cuisine || null;
   const page = req.query.page || 0;
   const per_page = req.query.per_page || 10;
