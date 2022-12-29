@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/griffithtp/api-recipes#readme",
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^5.1.0",
     "nodemon": "^1.15.1",
     "nyc": "^11.4.1",
     "supertest": "^3.0.0"
